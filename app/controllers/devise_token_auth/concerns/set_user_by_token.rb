@@ -29,6 +29,7 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     client_name = DeviseTokenAuth.headers_names[:'client']
 
     # parse header for values necessary for authentication
+    account_id = params[:account_id]
     uid        = request.headers[uid_name] || params[uid_name]
     @token     ||= request.headers[access_token_name] || params[access_token_name]
     @client_id ||= request.headers[client_name] || params[client_name]
@@ -58,7 +59,11 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     return false unless @token
 
     # mitigate timing attacks by finding by uid instead of auth token
-    user = uid && rc.find_by(uid: uid)
+    user = if uid
+      account_id ? rc.find_by(account_id: account_id, uid: uid) : rc.find_by(uid: uid)
+    else
+      false
+    end
 
     if user && user.valid_token?(@token, @client_id)
       # sign_in with bypass: true will be deprecated in the next version of Devise

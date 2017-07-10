@@ -10,7 +10,10 @@ module DeviseTokenAuth
 
     def create
       # Check
-      field = (resource_params.keys.map(&:to_sym) & resource_class.authentication_keys).first
+      # field = (resource_params.keys.map(&:to_sym) & resource_class.authentication_keys).first
+
+      account_id = resource_params[:account_id]
+      field = :email
 
       @resource = nil
       if field
@@ -20,13 +23,13 @@ module DeviseTokenAuth
           q_value.downcase!
         end
 
-        q = "#{field.to_s} = ? AND provider='email'"
+        q = "account_id= ? AND #{field.to_s} = ? AND provider='email'"
 
         if ActiveRecord::Base.connection.adapter_name.downcase.starts_with? 'mysql'
           q = "BINARY " + q
         end
 
-        @resource = resource_class.where(q, q_value).first
+        @resource = resource_class.where(q, account_id, q_value).first
       end
 
       if @resource && valid_params?(field, q_value) && (!@resource.respond_to?(:active_for_authentication?) || @resource.active_for_authentication?)
