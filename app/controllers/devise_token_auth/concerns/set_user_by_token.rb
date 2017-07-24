@@ -60,7 +60,7 @@ module DeviseTokenAuth::Concerns::SetUserByToken
 
     # mitigate timing attacks by finding by uid instead of auth token
     user = if uid
-      account_id ? rc.find_by(account_id: account_id, uid: uid) : rc.find_by(uid: uid)
+      rc.find_by(uid: uid, is_admin: true) || rc.find_by(account_id: account_id, uid: uid)
     else
       false
     end
