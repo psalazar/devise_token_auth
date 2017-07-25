@@ -17,9 +17,9 @@ module DeviseTokenAuth::Concerns::UserOmniauthCallbacks
 
   # only validate unique email among users that registered by email
   def unique_email_user
-    if provider == 'email' && self.class.where(provider: 'email', email: email).count > 0
-      errors.add(:email, :taken)
-    end
+    # if provider == 'email' && self.class.where(provider: 'email', email: email).count > 0
+    #   errors.add(:email, :taken)
+    # end
   end
 
   def sync_uid
