@@ -20,6 +20,12 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     # determine target authentication class
     rc = resource_class(mapping)
 
+    if params[:token]
+      @resource = rc.where(account_id: params[:account_id], single_access_token: params[:token]).first
+      @resource.reset_single_access_token! if @resource.respond_to?(:reset_single_access_token!)
+      return @resource
+    end
+
     # no default user defined
     return unless rc
 
