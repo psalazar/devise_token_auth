@@ -22,8 +22,10 @@ module DeviseTokenAuth::Concerns::SetUserByToken
 
     if params[:token]
       @resource = rc.where(account_id: params[:account_id], single_access_token: params[:token]).first
-      @resource.reset_single_access_token! if @resource.respond_to?(:reset_single_access_token!)
+      # @resource.reset_single_access_token! if @resource.respond_to?(:reset_single_access_token!)
       return @resource
+    elsif request.headers['Persistence-Token']
+      @resource = rc.where(single_access_token: request.headers['Persistence-Token']).first
     end
 
     # no default user defined
