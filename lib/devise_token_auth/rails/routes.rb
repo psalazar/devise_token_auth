@@ -91,8 +91,8 @@ module ActionDispatch::Routing
               end
 
               # re-construct the path for omniauth
-              "#{::OmniAuth.config.path_prefix}/#{params[:provider]}?#{redirect_params.to_param}"
-            }, via: [:get]
+              "#{::OmniAuth.config.path_prefix}/#{params[:provider]}?#{redirect_params.merge(params.slice(:account_id)).to_param}"
+            }, via: [:get]q
           end
         end
       end

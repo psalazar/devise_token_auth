@@ -79,12 +79,12 @@ module DeviseTokenAuth
 
     # break out provider attribute assignment for easy method extension
     def assign_provider_attrs(user, auth_hash)
-      user.assign_attributes({
-        nickname: auth_hash['info']['nickname'],
-        name:     auth_hash['info']['name'],
-        image:    auth_hash['info']['image'],
-        email:    auth_hash['info']['email']
-      })
+      user.nicknake = auth_hash['info']['nickname'] if user.respond_to?(:nickname=)
+      user.name = auth_hash['info']['name'] if user.respond_to?(:name=)
+      user.image = auth_hash['info']['image'] if user.respond_to?(:image=)
+      user.email = auth_hash['info']['email'] if user.respond_to?(:email=)
+      user.first_name = auth_hash['info']['first_name'] if user.respond_to?(:first_name=)
+      user.last_name = auth_hash['info']['last_name'] if user.respond_to?(:last_name=)
     end
 
     # derive allowed params from the standard devise parameter sanitizer
