@@ -73,6 +73,7 @@ module ActionDispatch::Routing
               # append name of current resource
               qs["resource_class"] = [resource]
               qs["namespace_name"] = [namespace_name] if namespace_name
+              qs["account_id"] = params[:account_id] if params[:account_id]
 
               set_omniauth_path_prefix!(DeviseTokenAuth.omniauth_prefix)
 
@@ -91,7 +92,7 @@ module ActionDispatch::Routing
               end
 
               # re-construct the path for omniauth
-              "#{::OmniAuth.config.path_prefix}/#{params[:provider]}?#{redirect_params.merge(params.slice(:account_id)).to_param}"
+              "#{::OmniAuth.config.path_prefix}/#{params[:provider]}?#{redirect_params.to_param}"
             }, via: [:get]
           end
         end

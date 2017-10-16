@@ -16,6 +16,7 @@ module DeviseTokenAuth
       path = "#{Devise.mappings[devise_mapping.to_sym].fullpath}/#{params[:provider]}/callback"
       klass = request.scheme == 'https' ? URI::HTTPS : URI::HTTP
       redirect_route = klass.build(host: request.host, port: request.port, path: path).to_s
+      redirect_route.gsub!(':account_id', request.env['omniauth.params']['account_id']) if request.env['omniauth.params']['account_id'].present?
 
       # preserve omniauth info for success route. ignore 'extra' in twitter
       # auth response to avoid CookieOverflow.
