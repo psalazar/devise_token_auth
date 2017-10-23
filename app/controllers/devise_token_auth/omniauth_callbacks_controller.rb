@@ -205,16 +205,26 @@ module DeviseTokenAuth
       # See app/views/devise_token_auth/omniauth_external_window.html.erb to understand
       # why we can handle these both the same.  The view is setup to handle both cases
       # at the same time.
+      Rails.logger.debug "1111111111: #{data.inspect}"
+      Rails.logger.debug "2222222222: #{user_data.inspect}"
+      Rails.logger.debug "3333333333: #{auth_origin_url.inspect}"
+
       if ['inAppBrowser', 'newWindow'].include?(omniauth_window_type)
         render_data(message, user_data.merge(data))
-
+        Rails.logger.debug "1111111111"
+      elsif ['json'].include?(omniauth_window_type)
+        render json: { success: true, data: user_data, headers: data, message: message }
       elsif auth_origin_url # default to same-window implementation, which forwards back to auth_origin_url
+        Rails.logger.debug "2222222222"
 
         # build and redirect to destination url
         redirect_to DeviseTokenAuth::Url.generate(auth_origin_url, data.merge(blank: true))
       elsif using_access_token_strategy?
-        render json: { success: true, data: user_data.merge(data).merge({message: message}) }
+        Rails.logger.debug "3333333333"
+        render json: { success: true, data: user_data, headers: data, message: message }
       else
+        Rails.logger.debug "444444444"
+
 
         # there SHOULD always be an auth_origin_url, but if someone does something silly
         # like coming straight to this url or refreshing the page at the wrong time, there may not be one.
