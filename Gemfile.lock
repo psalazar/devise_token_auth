@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/SoapSeller/omniauth-facebook-access-token
-  revision: 1125e764ef8d997b20a3bedf068cc1b135cb5700
-  specs:
-    omniauth-facebook-access-token (0.1.8)
-      oauth2 (~> 1.0.0)
-      omniauth (~> 1.2)
-
-GIT
   remote: https://github.com/intridea/omniauth-github
   revision: 2e77639f32c35598e398c0c591ffab37691cdee7
   specs:
@@ -27,6 +19,14 @@ GIT
   specs:
     omniauth-facebook (4.0.0)
       omniauth-oauth2 (~> 1.2)
+
+GIT
+  remote: https://github.com/psalazar/omniauth-facebook-access-token.git
+  revision: c30adac750e9601044dfe04bf83e611884569fa6
+  specs:
+    omniauth-facebook-access-token (0.1.8)
+      oauth2 (>= 1.0.0)
+      omniauth (>= 1.2)
 
 GIT
   remote: https://github.com/zquestz/omniauth-google-oauth2
