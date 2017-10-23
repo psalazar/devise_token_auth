@@ -8,13 +8,14 @@ module DeviseTokenAuth
         client_id  = SecureRandom.urlsafe_base64(nil, false)
         token      = SecureRandom.urlsafe_base64(nil, false)
         token_hash = BCrypt::Password.create(token)
-        expiry     = (Time.now + DeviseTokenAuth.token_lifespan).to_i
+        expiry     = (Time.now + @resource.token_lifespan).to_i
 
         @resource.tokens[client_id] = {
           token:  token_hash,
           expiry: expiry
         }
 
+        sign_in(@resource)
         @resource.save!
 
         yield @resource if block_given?
