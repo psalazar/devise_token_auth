@@ -19,6 +19,7 @@ group :development, :test do
   gem 'omniauth-facebook', git: 'https://github.com/mkdynamic/omniauth-facebook'
   gem 'omniauth-github',        git: 'https://github.com/intridea/omniauth-github'
   gem 'omniauth-google-oauth2', git: 'https://github.com/zquestz/omniauth-google-oauth2'
+  gem 'omniauth-facebook-access-token', git: 'https://github.com/SoapSeller/omniauth-facebook-access-token'
   gem 'rack-cors', require: 'rack/cors'
   gem 'thor'
 
