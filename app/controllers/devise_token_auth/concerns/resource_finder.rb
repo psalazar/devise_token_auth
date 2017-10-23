@@ -25,6 +25,8 @@ module DeviseTokenAuth::Concerns::ResourceFinder
 
       @resource = resource_class.where(q, account_id, value).first
     end
+
+    @resource
   end
 
   def resource_class(m=nil)
