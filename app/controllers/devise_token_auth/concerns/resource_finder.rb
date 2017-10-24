@@ -17,7 +17,7 @@ module DeviseTokenAuth::Concerns::ResourceFinder
     @resource = resource_class.where(email: value, is_admin: true).first
 
     unless @resource
-      q = "account_id= ? AND #{field.to_s} = ? AND provider='#{provide.to_s}'"
+      q = "account_id= ? AND #{field.to_s} = ? AND provider='#{provider.to_s}'"
 
       if ActiveRecord::Base.connection.adapter_name.downcase.starts_with? 'mysql'
         q = "BINARY " + q
