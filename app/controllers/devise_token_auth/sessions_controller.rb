@@ -40,6 +40,9 @@ module DeviseTokenAuth
           token: BCrypt::Password.create(@token),
           expiry: (Time.now + @resource.token_lifespan).to_i
         }
+
+        add_custom_params_to_resource
+
         @resource.save
 
         sign_in(:user, @resource, store: false, bypass: false)
@@ -73,6 +76,11 @@ module DeviseTokenAuth
     end
 
     protected
+
+    def add_custom_params_to_resource
+      @resource.registration_key = resource_params[:registration_key] if @resource.respond_to?(:registration_key=) && resource_params[:registration_key].present?
+      @resource.locale = resource_params[:locale] if @resource.respond_to?(:locale=) && resource_params[:locale].present?
+    end
 
     def valid_params?(key, val)
       resource_params[:password] && key && val
