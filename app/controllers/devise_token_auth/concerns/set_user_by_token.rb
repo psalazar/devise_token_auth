@@ -32,7 +32,12 @@ module DeviseTokenAuth::Concerns::SetUserByToken
       # @resource.reset_single_access_token! if @resource.respond_to?(:reset_single_access_token!)
       return @resource
     elsif request.headers['Persistence-Token']
-      @resource = rc.where(single_access_token: request.headers['Persistence-Token']).first
+      @resource =
+      if rc.respond_to?(:persistence_token)
+        rc.where(persistence_token: request.headers['Persistence-Token']).first
+      else
+        rc.where(single_access_token: request.headers['Persistence-Token']).first
+      end
     end
 
     # no default user defined
