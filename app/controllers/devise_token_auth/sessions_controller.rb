@@ -78,7 +78,7 @@ module DeviseTokenAuth
     protected
 
     def add_custom_params_to_resource
-      @resource.registration_key = resource_params[:registration_key] if @resource.respond_to?(:registration_key=) && resource_params[:registration_key].present?
+      @resource.registration_token = resource_params[:registration_token] if @resource.respond_to?(:registration_token=) && resource_params[:registration_token].present?
       @resource.locale = resource_params[:locale] if @resource.respond_to?(:locale=) && resource_params[:locale].present?
     end
 
