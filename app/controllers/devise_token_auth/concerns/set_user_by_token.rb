@@ -28,7 +28,7 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     rc = resource_class(mapping)
 
     if params[:token]
-      @resource = rc.where(account_id: params[:account_id], single_access_token: params[:token]).first
+      @resource = rc.of_account(params[:account_id]).where(single_access_token: params[:token]).first
       # @resource.reset_single_access_token! if @resource.respond_to?(:reset_single_access_token!)
       return @resource
     elsif request.headers['Persistence-Token']
@@ -80,7 +80,7 @@ module DeviseTokenAuth::Concerns::SetUserByToken
 
     # mitigate timing attacks by finding by uid instead of auth token
     user = if uid
-      rc.find_by(uid: uid, is_admin: true) || rc.find_by(account_id: account_id, uid: uid)
+      rc.find_by(uid: uid, is_admin: true) || rc.of_account(account_id).where(uid: uid).first
     else
       false
     end
