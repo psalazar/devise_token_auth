@@ -17,7 +17,12 @@ module DeviseTokenAuth::Concerns::ResourceFinder
     @resource = resource_class.where(email: value, is_admin: true).first
 
     unless @resource
-      @resource = resource_class.of_account(account_id).provider(provider).where(email: value).first
+      @resource =
+        if account_id
+          resource_class.of_account(account_id).provider(provider).where(email: value).first
+        else
+          resource_class.provider(provider).where(email: value).first
+        end
     end
 
     @resource
