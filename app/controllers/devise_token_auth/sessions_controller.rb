@@ -28,6 +28,8 @@ module DeviseTokenAuth
 
       if @resource && valid_params?(field, q_value) && (!@resource.respond_to?(:active_for_authentication?) || @resource.active_for_authentication?)
         valid_password = @resource.valid_password?(resource_params[:password])
+        valid_password = @resource.valid_signin_token?(resource_params[:password]) if @resource.respond_to?(:valid_signin_token?) && !valid_password
+
         if (@resource.respond_to?(:valid_for_authentication?) && !@resource.valid_for_authentication? { valid_password }) || !valid_password
           render_create_error_bad_credentials
           return
