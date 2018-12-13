@@ -6,6 +6,7 @@ module DeviseTokenAuth
     def validate_token
       # @resource will have been set by set_user_token concern
       if @resource
+        @resource.set_last_activity! if @resource.respond_to?('set_last_activity!')
         yield @resource if block_given?
         render_validate_token_success
       else
