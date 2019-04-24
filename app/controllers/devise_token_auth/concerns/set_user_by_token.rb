@@ -80,10 +80,12 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     return false unless @token
 
     # mitigate timing attacks by finding by uid instead of auth token
-    user = if uid
-      rc.find_by(uid: uid, is_admin: true) || rc.of_account(account_id).where(uid: uid).first
-    else
-      false
+    user = false
+
+    if uid
+      user = rc.find_by(uid: uid, is_admin: true)
+      user ||= rc.of_account(account_id).where(uid: uid).first if account_id
+      user ||= rc.where(uid: uid).first unless account_id
     end
 
     if user && user.valid_token?(@token, @client_id)
