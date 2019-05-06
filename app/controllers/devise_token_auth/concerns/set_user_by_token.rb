@@ -28,7 +28,10 @@ module DeviseTokenAuth::Concerns::SetUserByToken
     rc = resource_class(mapping)
 
     if params[:token]
-      @resource = rc.of_account(params[:account_id]).where(single_access_token: params[:token]).first
+      @resource = rc.where(single_access_token: params[:token])
+      @resource = @resource.of_account(params[:account_id]) if params[:account_id]
+      @resource = @resource.first
+
       # @resource.reset_single_access_token! if @resource.respond_to?(:reset_single_access_token!)
       return @resource
     elsif request.headers['Persistence-Token']
